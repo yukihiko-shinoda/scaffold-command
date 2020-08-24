@@ -30,7 +30,7 @@ matrix:
       env: WP_VERSION=latest
     {{#wp_versions_to_test}}
     - php: 5.6
-      env: WP_VERSION={{.}}
+      env: WP_VERSION={{.}} PHPUNIT_REQUIRE="4.8.*|5.7.*"
     {{/wp_versions_to_test}}
     - php: 5.6
       env: WP_TRAVISCI=phpcs
@@ -46,7 +46,7 @@ before_script:
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-      composer global require "phpunit/phpunit=4.8.*|5.7.*"
+      composer global require "phpunit/phpunit=${PHPUNIT_REQUIRE:-4.8.*|5.7.*|<8.0.0}"
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
